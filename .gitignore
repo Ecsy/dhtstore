@@ -68,3 +68,5 @@ gen
 
 ### Project files
 /bin/
+/*.key
+/bootstrap.json

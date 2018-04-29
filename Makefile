@@ -61,11 +61,11 @@ GOINSTALLFLAGS+=$(GO_LD_FLAGS)
 
 # ---- Targets ----
 TARGETS = \
-	bep0044
+	dhtstore
 
 $(TARGETS):: check
 
-bep0044:: src/cmd/bep0044/bep0044.go ## Compile bep0044.
+dhtstore:: src/cmd/dhtstore/dhtstore.go ## Compile dhtstore.
 	$(COMPILE_GO)
 
 # ---- Common ----

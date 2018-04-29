@@ -24,6 +24,13 @@
 #   go-tests = true
 #   unused-packages = true
 
+[[constraint]]
+  name = "github.com/mh-cbon/dht"
+  branch = "master"
+
+[[constraint]]
+  name = "github.com/anacrolix/torrent"
+  revision = "8d1995c4d4d0c851d8e5e9ca70acafb8fb524a7b"
 
 [prune]
   go-tests = true
