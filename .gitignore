@@ -69,4 +69,5 @@ gen
 ### Project files
 /bin/
 /*.key
+/*.log
 /bootstrap.json
