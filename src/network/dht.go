@@ -86,7 +86,7 @@ func (d *DHT) Bootstrap(filename string) (bNodes []string, err error) {
 		bNodes := d.public.BootstrapExport()
 		d.log.Println("bootstrap nodes:", len(bNodes))
 		if filename != "" {
-			_ = bootstrap.Save(filename, publicIP, bNodes)
+			_ = bootstrap.Save(filename, recommendedIP, bNodes)
 		}
 	}
 	d.log.Printf("id after bootstrap %x\n", d.public.ID())
