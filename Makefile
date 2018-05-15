@@ -37,27 +37,12 @@ define COMPILE
 	$($(1)) $($(1)FLAGS) $<
 endef
 
-#define COMPILE
-#	$(call $(1)DEP,$(1))
-#	$($(1)) $($(1)FLAGS) $($(1)_DEPFLAGS) $($(1)_C) $($(1)_O) $(patsubst $(SRC_PATH)/%,$(SRC_LINK)/%,$<)
-#endef
-
 # ---- Compilers ----
 GOINSTALL=$(GO) install -v
 COMPILE_GO = $(call COMPILE,GOINSTALL)
 
 # ---- Compiler Flags ----
 GOINSTALLFLAGS+=$(GO_LD_FLAGS)
-
-# ---- Auto Targets ----
-#define COMPILE
-#	$($(1)) $($(1)FLAGS) src/cmd/$@/$@.go # auto targets
-#endef
-#var TARGETS: ## Compile targets (e.g. zapexample)
-#TARGETS ?= $(subst /,,$(dir $(patsubst src/cmd/%,%,$(wildcard src/cmd/*/*.go))))
-#
-#$(TARGETS): src/cmd/*/*.go
-#	$(COMPILE_GO)
 
 # ---- Targets ----
 TARGETS = \
