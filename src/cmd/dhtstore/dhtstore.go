@@ -1,11 +1,12 @@
 package main
 
 import (
-	"encoding/hex"
 	"flag"
 	"log"
 	"net"
 	"os"
+	"strings"
+	"time"
 
 	"github.com/ecsy/thesis/src/network"
 	"github.com/mh-cbon/dht/dht"
@@ -115,6 +116,13 @@ func get(publicKey cryptoed25519.PublicKey, target string, seq int, salt string)
 				log.Fatal(err)
 			}
 			log.Printf("seq: %d, val: %s\n", seq, val)
+			if idx := strings.Index(val, " m="); idx > -1 {
+				val = val[:idx]
+			}
+			t, err := time.Parse("2006-01-02 15:04:05.999999999 -0700 MST", val)
+			if err == nil {
+				log.Printf("seen: %s\n", time.Now().Sub(t))
+			}
 		}
 
 		return nil
@@ -130,34 +138,33 @@ func put(privateKey ed25519.PrivateKey, value string, seq int, salt string) func
 			return err
 		}
 
+		if value == "" {
+			value = time.Now().String()
+		}
+
 		m, err := network.MutableTarget(privateKey, value, seq, salt)
 		if err != nil {
 			return err
 		}
 		log.Printf("put target hash: %v\n", m.Target)
+		t := time.Now()
 		err = n.Put(m)
 		if err != nil {
 			return err
 		}
 
-		log.Println("put done")
+		log.Printf("put done %s", time.Now().Sub(t))
 		return nil
 	}
 }
 
 func getKeys() (ed25519.PrivateKey, cryptoed25519.PublicKey, error) {
-	b, _ := hex.DecodeString("5b3246f7fdfd21518648e4247af5e506b94660c4a93f5a4ca95dfaaf6e73955c36b6958c9b335c5852ecf06499a515c186fbbefb12cf93a94c5dd329b27ac743")
-	private := ed25519.PrivateKey(b)
-	b, _ = hex.DecodeString("c5b985b2e22eb9c13a0c9dd788c2b1d6d539d1c096c43eed3c5df34b775d4668")
-	public := cryptoed25519.PublicKey(b)
-	var err error
-
-	//// Private and public key, generate if not found.
-	//private, public, err := ed25519.PvkFromDir(".", keyName)
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//// Fix ed25519.PvkFromDir returning longer private key than expected.
-	//private = private[:64]
+	// Private and public key, generate if not found.
+	private, public, err := ed25519.PvkFromDir(".", keyName)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// Fix ed25519.PvkFromDir returning longer private key than expected.
+	private = private[:64]
 	return private, public, err
 }
