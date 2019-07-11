@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ecsy/thesis/src/network"
+	"github.com/ecsy/dhtstore/src/network"
 	"github.com/mh-cbon/dht/dht"
 	"github.com/mh-cbon/dht/ed25519"
 	"github.com/mh-cbon/dht/security"
